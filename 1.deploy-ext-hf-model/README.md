@@ -5,7 +5,7 @@
 Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure ML.
 
 ## Motivations
-- Playing with HuggingFace (HF) models on a local machine has its limits. I (a) needed a more powerful GPU than I currently have, (b) won't pay to use hosted services and (c) just wanted to learn. So I set about deploying this within my Azure test account.
+- Playing with HuggingFace (HF) models on a local machine is fine, but how to serve this model perhaps privately within a studio or company setting? Try this, I set about deploying this within an Azure test account.
 - the HF model I needed was FLUX.1-dev NF4, but that is not available in the Azure ML Model Catalog, which would have been very convenient. So I had to find some way to load that model from HF.
 - I wanted to explore Azure ML usage both from scripted and Portal UX approaches, so you will see a mix of Python and Azure ML Studio in the steps below. There's no reason it couldn't be completely one or the other.
 
@@ -24,19 +24,26 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 
 Follow instructions from learn.microsoft.com to set up an Azure ML workspace in an Azure Subscription.
 Some notes
-- GPU compute quota is needed. CPU works, but is in practice way too slow
+- GPU compute quota is needed for this model. CPU works in theory, but is in practice way too slow
 - Check which GPU SKUs are allowed for Managed Endpoints from [link]. For instance, A10 GPUs are not supported
-- Ensure GPU has enough VRAM. I specifically selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
+- Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes...
 
 ## 1. Set up HF model
+
+Flux.1-Dev actually consists of 5 models:
+- 1 Transformer
+- 2 CLIP (Contrastive Language-Image Pair) models
+- 1 Variational Autoencoder (vae)
+
 
 ## 2. Create Docker container
 
 ## Improvements 
 
 This is just a log of my first attempts, and by no means what "good" looks like. 
-I intend to make improvements, which will be detailed in this project's backlog.
+I intend to make improvements, which will be detailed in this project's backlog (tbd).
+Also I will focus on using Python Notebooks going forward instead of this format.
 
 ## Lessons learned
 
