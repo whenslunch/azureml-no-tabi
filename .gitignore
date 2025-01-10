@@ -169,3 +169,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Others
+
+# all my secret are not belong to you
+config.json
+
+# exclude massive model binaries
+saved_model

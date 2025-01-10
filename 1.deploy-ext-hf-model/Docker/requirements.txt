@@ -1,0 +1,14 @@
+accelerate==1.1.1
+bitsandbytes==0.45.0
+diffusers==0.31.0
+fastapi==0.115.6
+joblib
+pillow
+pyyaml
+protobuf==5.29.0
+sentencepiece
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
+transformers==4.47.1
+uvicorn
