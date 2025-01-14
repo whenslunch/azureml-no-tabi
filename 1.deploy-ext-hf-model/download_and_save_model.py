@@ -13,7 +13,7 @@ pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", text_encoder
 pipe.enable_model_cpu_offload()
 
 image = pipe(
-            "In a big country, dreams stay with you, like a lovers voice, on the mountainside",
+            "In a big country, dreams stay with you, like a lovers voice fires the mountainside",
             guidance_scale=3.5,
             num_inference_steps=20,
             max_sequence_length=256,

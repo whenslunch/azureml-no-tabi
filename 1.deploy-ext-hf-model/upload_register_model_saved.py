@@ -34,7 +34,7 @@ ml_client = MLClient(
 
 registered_model = ml_client.models.create_or_update(
     Model(
-        name="flux1-dev-nf4",
+        name="flux1-dev-nf4-2",
         path="./saved_model",
         description="Flux Dev NF4 saved model trial",
         type="custom_model"

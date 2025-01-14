@@ -37,7 +37,7 @@ Flux.1-Dev NF4 consists of multiple components and not just a single model weigh
 - 1 variational autoencoder (vae)
 - scheduler
 
-There are a few ways to deal with this but one way is to load the model using FluxPipeline.from_pretrained() with the correct parameters, then save it out to a subdirectory on disk with FluxPipeline.save_pretrained(). Here, I saved it to "./saved_model". Before saving, run a test generation that outputs a PNG file. 
+There are a few ways to deal with this but one way is to load the model using FluxPipeline.from_pretrained() with the correct parameters, then save it out to a subdirectory on disk with FluxPipeline.save_pretrained(). Here, I saved it to "./saved_model". Before saving, run a test generation locally that outputs a PNG file. 
 
 Now, FLUX is a gated model, meaning it is openly accessible, but you need to login to HF first, i.e. no anonymous access. So you need an HF account first of all.
 Then, install the Hugging Face CLI:
