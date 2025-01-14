@@ -1,6 +1,6 @@
 POST https://endpt-flux1-dev-nf4.eastus2.inference.ml.azure.com/score
 Content-Type: application/json
-Authorization: Bearer zhdNKDIoCgvnOGgexGvZis6npmNBMshf
+Authorization: Bearer 4f1UIwmaMJpcqwU1ZIrgWtk3BHYi3D8b
 Accept: image/png
 
 {

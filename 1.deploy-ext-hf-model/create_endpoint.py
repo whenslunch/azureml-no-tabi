@@ -3,6 +3,8 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
+    Model,
+    Environment,
     CodeConfiguration
 )
 from azure.identity import ClientSecretCredential
@@ -21,7 +23,7 @@ client_secret = config["client_secret"]
 
 credential = ClientSecretCredential(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
 
-# get a handle to the workspace
+# create the Azure ML Client with a service principal
 ml_client = MLClient(
     credential=credential,
     subscription_id=subscription_id,
@@ -29,29 +31,30 @@ ml_client = MLClient(
     workspace_name=workspace_name
 )
 
-endpoint_name = "endpt-flux1-dev-nf4"
 
 # create an online endpoint
+endpoint_name = "endpt-flux1-dev-nf4"
+
 endpoint = ManagedOnlineEndpoint(
     name = endpoint_name, 
     description="endpt-flux-dev-nf4-pkg",
     auth_mode="key"
 )
 
-print("Endpoint created")
-
-models = ml_client.models.list()
-for model in models:
-    print(model.name)
-
+# select the model previously registered
 registered_model = ml_client.models.get(name="flux1-dev-nf4-2", version="1")
 
-print("Model gotten")
 
-env = ml_client.environments.get("basic-gpu-inference-env", version="2")
+# select the environment previously defined
+#env = ml_client.environments.get("basic-gpu-inference-env", version="2")
+env = Environment(
+    conda_file="config.yml",
+    image="mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1"
+    )
 
+# create a deployment
 deployment = ManagedOnlineDeployment(
-    name="brown",
+    name="purple",
     endpoint_name=endpoint_name,
     model=registered_model,
     environment=env,
@@ -64,12 +67,14 @@ deployment = ManagedOnlineDeployment(
 
 # Create or update the Endpoint
 print("Creating or updating the endpoint...")
-endpoint_poller = ml_client.online_endpoints.begin_create_or_update(endpoint)
-endpoint_res = endpoint_poller.result()  # Waits for the operation to complete
+#endpoint_poller = 
+ml_client.online_endpoints.begin_create_or_update(endpoint)
+#endpoint_res = endpoint_poller.result()  # Waits for the operation to complete
 print("Endpoint created or updated.")
 
 # Create or update the Deployment
 print("Creating or updating the deployment...")
-deployment_poller = ml_client.online_deployments.begin_create_or_update(deployment)
-deployment_res = deployment_poller.result()  # Waits for the operation to complete
+#deployment_poller = 
+ml_client.online_deployments.begin_create_or_update(deployment=deployment)
+#deployment_res = deployment_poller.result()  # Waits for the operation to complete
 print("Deployment created or updated.")
