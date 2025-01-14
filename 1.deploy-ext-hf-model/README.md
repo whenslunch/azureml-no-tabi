@@ -12,14 +12,14 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 
 ## Overview
 
-0. Set up Azure ML, upload and register as a model in Azure ML
-1. Set up FLUX.1-Dev NF4 ("Flux NF4" for short) for upload to Azure ML
-2. Create Azure ML Environment
-3. Write scoring script
-4. Create Endpoint and Deployment
-5. Test and profit
+1. Set up Azure ML, upload and register as a model in Azure ML
+2. Set up FLUX.1-Dev NF4 ("Flux NF4" for short) for upload to Azure ML
+3. Create Azure ML Environment
+4. Write scoring script
+5. Create Endpoint and Deployment
+6. Test and profit
 
-## 0. Set up Azure ML
+## 1. Set up Azure ML
 
 Follow instructions from learn.microsoft.com to set up an Azure ML workspace in an Azure Subscription.
 Some notes
@@ -28,7 +28,7 @@ Some notes
 - Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes - to be completed.
 
-## 1. Set up HF model for upload, upload & register model
+## 2. Set up HF model for upload, upload & register model
 
 References: download_and_save_model.py, upload_register_model_saved.py
 
@@ -59,7 +59,7 @@ The only wrinkle here is that by default, the AzureML workspace's storage accoun
 One other learning is that models created with the "v1" API from the azureml library are not compatible with "v2" API using the azure.ai.ml library. Found out the hard way through code suggested by Copilot, when I didn't specify which version it should use.
 
 
-## 2. Create Azure ML Environment
+## 3. Create Azure ML Environment
 
 Reference: create_environment.py
 
@@ -72,7 +72,7 @@ I created a config.yml file for conda, including the required libraries for the 
 The script then takes all of these arguments and an environment definition in Azure ML as opposed to an actual environment. The actual environment build gets triggered with the deployment job as you'll see later. Or, if you really wanted to you could manually force a build in the Azure ML Portal Environment page.
 
 
-## 3. Write scoring script
+## 4. Write scoring script
 
 Reference: ./scripts/score.py
 
@@ -84,7 +84,7 @@ The generated image was then saved in PNG format and sent as a response, along w
 
 At this stage you'll just have to take my word that the script works. I will improve this by adding some way to first test it locally.
 
-## 4. Create Endpoint
+## 5. Create Endpoint
 
 Reference: NOTE- create_environment.py DOES NOT WORK and I'm still trying to figure out why. It will deploy successfully, but the resulting endpoint will return 408 for some reason, and there seems to be nothing in the logs to suggest why it is timing out.
 
@@ -96,7 +96,7 @@ Here is the final output when all is done.
 ![Azure ML Deployment output](./azureml_deployment_output.png)
 
 
-## 5. Test 
+## 6. Test 
 
 Reference: requests.http
 
@@ -116,9 +116,9 @@ Mission accomplished... for now.
 
 This is just a log of my first attempts, and by no means what "good" looks like. 
 I intend to make improvements, which will be detailed in this project's backlog (tbd).
-Also I will focus on using Python Notebooks going forward instead of this format.
+
 
 ## Lessons learned
 
-
+To be completed... so, so much...
 
