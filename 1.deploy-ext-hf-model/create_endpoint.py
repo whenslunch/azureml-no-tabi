@@ -3,8 +3,6 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
-    Model,
-    Environment,
     CodeConfiguration
 )
 from azure.identity import ClientSecretCredential
@@ -46,11 +44,7 @@ registered_model = ml_client.models.get(name="flux1-dev-nf4-2", version="1")
 
 
 # select the environment previously defined
-#env = ml_client.environments.get("basic-gpu-inference-env", version="2")
-env = Environment(
-    conda_file="config.yml",
-    image="mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1"
-    )
+env = ml_client.environments.get("basic-gpu-inference-env", version="2")
 
 # create a deployment
 deployment = ManagedOnlineDeployment(
@@ -67,14 +61,10 @@ deployment = ManagedOnlineDeployment(
 
 # Create or update the Endpoint
 print("Creating or updating the endpoint...")
-#endpoint_poller = 
 ml_client.online_endpoints.begin_create_or_update(endpoint)
-#endpoint_res = endpoint_poller.result()  # Waits for the operation to complete
 print("Endpoint created or updated.")
 
 # Create or update the Deployment
 print("Creating or updating the deployment...")
-#deployment_poller = 
 ml_client.online_deployments.begin_create_or_update(deployment=deployment)
-#deployment_res = deployment_poller.result()  # Waits for the operation to complete
 print("Deployment created or updated.")
