@@ -7,17 +7,17 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 ## Motivations
 - Playing with HuggingFace (HF) models on a local machine is fine, but how to serve this model perhaps privately within a studio or company setting? Try this, I set about deploying this within an Azure test account.
 - the HF model I needed was FLUX.1-dev NF4, but that is not available in the Azure ML Model Catalog, which would have been very convenient. So I had to find some way to load that model from HF.
-- I wanted to explore Azure ML usage both from scripted and Portal UX approaches, so you will see a mix of Python and Azure ML Studio in the steps below. There's no reason it couldn't be completely one or the other.
-- I wanted to get up and running asap and my python (among others) ain't too hot, so I used Copilot. A lot.
+- I wanted to script everything, but as you'll see I had to default to the Azure ML Portal for deployment. I will continue troubleshooting the scripted approach.
+- I wanted to get up and running asap and my python (among other things) ain't too hot, so I used Copilot. A lot.
 
 ## Overview
 
-1. Set up Azure ML, upload and register as a model in Azure ML
+1. Set up Azure ML
 2. Set up FLUX.1-Dev NF4 ("Flux NF4" for short) for upload to Azure ML
 3. Create Azure ML Environment
 4. Write scoring script
 5. Create Endpoint and Deployment
-6. Test and profit
+6. Test
 
 ## 1. Set up Azure ML
 
@@ -28,7 +28,7 @@ Some notes
 - Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes - to be completed.
 
-## 2. Set up HF model for upload, upload & register model
+## 2. Set up FLUX NF4 for upload, upload & register model
 
 References: download_and_save_model.py, upload_register_model_saved.py
 
@@ -84,9 +84,9 @@ The generated image was then saved in PNG format and sent as a response, along w
 
 At this stage you'll just have to take my word that the script works. I will improve this by adding some way to first test it locally.
 
-## 5. Create Endpoint
+## 5. Create Endpoint and Deployment
 
-Reference: NOTE- create_environment.py DOES NOT WORK and I'm still trying to figure out why. It will deploy successfully, but the resulting endpoint will return 408 for some reason, and there seems to be nothing in the logs to suggest why it is timing out.
+Reference: NOTE- create_environment.py DOES NOT WORK and I'm still trying to figure out why. It will deploy successfully, but the resulting endpoint will return 408 for some reason, and there seems to be nothing in the logs to suggest why it is timing out. I realize that as part of the Portal deployment method, there is a configuration line for "timeout" set to 60 sec, whereas the logs seem to suggest it's set to 5 sec when deployed by script. Definitely going to pull on that thread.
 
 However, for now I have got it working by deploying via the Portal. So in ml.azure.com, in the Workspace > Environments page, create an Endpoint and Add deployment. Fill in all the tabs for the deployment configuration, specifying the Model (which should already be registered; pay attention to the version number), Environment and deployment name. Finally, specify the compute SKU, GPU based. I set the instance count to 1 since this is just a test, but you'll need more for redundancy and scale, of course. 
 
