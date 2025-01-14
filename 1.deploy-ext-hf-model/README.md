@@ -55,7 +55,7 @@ Another way that is similiar, is to utilize the FluxPipeline cache. When a model
    
 Next, in python, configure an Azure MLClient with the right credentials, subscription, etc. and from there, create a registered model. 
 
-The only wrinkle here is that by default, the AzureML workspace's storage account was set up with key-based authentication disabled. But I was working from a local machine and could not get a Managed Identity for it (I guess the assumption is that the user would be working from an Azure VM?) so had a specifically enable key auth on the storage account for this to work.
+The only wrinkle here is that by default, the AzureML workspace's storage account was set up with key-based authentication disabled. But I was working from a local machine and could not get a Managed Identity for it (I guess the assumption is that the user would be working from an Azure VM?) so I had to specifically enable key auth on the storage account for this to work.
 
 One other learning is that models created with the "v1" API from the azureml library are not compatible with "v2" API using the azure.ai.ml library. Found out the hard way through code suggested by Copilot, when I didn't specify which version it should use.
 
