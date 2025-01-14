@@ -1,0 +1,5 @@
+GET https://endpt-flux1-dev-nf4.eastus2.inference.ml.azure.com/swagger.json
+Content-Type: application/json
+Authorization: Bearer zhdNKDIoCgvnOGgexGvZis6npmNBMshf
+
+{}

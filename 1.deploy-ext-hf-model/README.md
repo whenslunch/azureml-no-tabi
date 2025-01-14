@@ -59,25 +59,13 @@ One other learning is that models created with the "v1" API from the azureml lib
 
 ## 2. Create Azure ML Environment
 
-There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I decided to use a pre-created base image then install needed components. I also assembled the Environment through the Portal.
+There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I chose the latter.
 
 First, I found in the Microsoft image repo a base image for GPU inferencing: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1. The presence of the Nvidia CUDA driver is key.
 
-Requirements.txt layers on the required libraries for the Flux NF4 model. Pinning the version numbers is important if you don't want mysterious model crashes.
+I created a config.yml file for conda, including the required libraries for the Flux NF4 model. Pinning the version numbers is important if you don't want mysterious model crashes. Note - I'm not sure where I missed it in the docs, but doing it this way I had an environment container crash because it lacked "azureml-inference-server-http" in the conda config file, and had to add it manually for it to work.
 
-Once the image is created, it was uploaded to my own Azure Container Registry. 
-
-In the Portal, under Environments, click Create.
-
-Settings: 
-- Name: some relevant name
-- Select environment source: "use existing docker image with optional conda file"
-- Container registry image path: docker pull link to ACR image
-
-Customize:
-- Since everything was in the image already, I didn't need conda to do anything more, so left blank
-
-Go through Tags and Review tabs, then Create.
+The script then takes all of these arguments and an environment definition in Azure ML as opposed to an actual environment. The actual environment build gets triggered with the deployment job as you'll see later. Or, if you really wanted to you could manually force a build in the Azure ML Portal Environment page.
 
 
 ## 3. Write scoring script
@@ -88,7 +76,11 @@ The generic scoring script template was modified to include the HF libraries for
 
 The generated image was then saved in PNG format and sent as a response, along with the appropriate http mime type. 
 
+At this stage you'll just have to take my word that the script works. I will improve this by adding some way to first test it locally.
+
 ## 4. Create Endpoint
+
+
 
 
 ## 5. Test 

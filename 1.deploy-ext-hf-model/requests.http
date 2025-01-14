@@ -1,0 +1,14 @@
+POST https://endpt-flux1-dev-nf4.eastus2.inference.ml.azure.com/score
+Content-Type: application/json
+Authorization: Bearer zhdNKDIoCgvnOGgexGvZis6npmNBMshf
+Accept: image/png
+
+{
+    "prompt": "Fish heads fish heads roly poly fish heads eat them up yum.",
+    "guidance_scale": 7.5,
+    "num_inference_steps": 20,
+    "max_sequence_length": 256,
+    "generator_seed": 123134534532312
+}
+
+

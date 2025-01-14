@@ -2,7 +2,7 @@ import os
 import json
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Model
-from azure.identity import ManagedIdentityCredential, ClientSecretCredential, CertificateCredential
+from azure.identity import ClientSecretCredential
 
 # Load the configuration file
 with open("config.json") as f:
