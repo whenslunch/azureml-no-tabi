@@ -5,7 +5,7 @@
 Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure ML.
 
 ## Motivations
-- Playing with HuggingFace (HF) models on a local machine is fine, but how to serve this model perhaps privately within a studio or company setting? Try this, I set about deploying this within an Azure test account.
+- Playing with HuggingFace (HF) models on a local machine is fine, but how to serve this model perhaps privately within a studio or enterprise setting? Try this, I set about deploying this within an Azure test account.
 - the HF model I needed was FLUX.1-dev NF4, but that is not available in the Azure ML Model Catalog, which would have been very convenient. So I had to find some way to load that model from HF.
 - I wanted to script everything, but as you'll see I had to default to the Azure ML Portal for deployment. I will continue troubleshooting the scripted approach.
 - I wanted to get up and running asap and my python (among other things) ain't too hot, so I used Copilot. A lot.
