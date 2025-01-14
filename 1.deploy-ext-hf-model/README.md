@@ -18,6 +18,7 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 4. Write scoring script
 5. Create Endpoint and Deployment
 6. Test
+7. Clean up
 
 ## 1. Set up Azure ML
 
@@ -111,6 +112,10 @@ Prompt: "_She wore a raspberry beret, the kind you find in a second-hand store._
 
 Mission accomplished... for now.
 
+## 7. Clean up
+
+The endpoint is costing money while it is active, so make sure to delete it if not needed.
+I saw something in the docs that says it will spin down to 0 if inactive for a certain period, but I'm not sure that functionality actually works, I will test further.
 
 ## Improvements 
 
