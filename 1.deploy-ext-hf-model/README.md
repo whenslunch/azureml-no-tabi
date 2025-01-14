@@ -96,7 +96,6 @@ Here is the final output when all is done.
 ![Azure ML Deployment output](./azureml_deployment_output.png)
 
 
-
 ## 5. Test 
 
 Reference: requests.http
@@ -107,6 +106,8 @@ Using the REST Client extension in VSCode, I added the Auth Key to a POST call w
 I got back this lovely image:
 
 ![Flux output](./flux1_dev_nf4_output.png)
+
+Prompt: "_She wore a raspberry beret, the kind you find in a second-hand store._"
 
 Mission accomplished... for now.
 
