@@ -177,3 +177,6 @@ config.json
 
 # exclude massive model binaries
 saved_model
+
+# generated images
+generated_images/
