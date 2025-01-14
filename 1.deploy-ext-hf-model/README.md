@@ -37,11 +37,20 @@ Flux.1-Dev NF4 consists of multiple components and not just a single model weigh
 - 1 variational autoencoder (vae)
 - scheduler
 
-There are a few ways to deal with this but one way is to load the model using FluxPipeline.from_pretrained() with the correct parameters, then save it out to a subdirectory on disk with FluxPipeline.save_pretrained(). Here, I saved it to "./saved_model". The whole folder is then registered as the model in Azure ML.
+There are a few ways to deal with this but one way is to load the model using FluxPipeline.from_pretrained() with the correct parameters, then save it out to a subdirectory on disk with FluxPipeline.save_pretrained(). Here, I saved it to "./saved_model". Before saving, run a test generation that outputs a PNG file. 
+
+Now, FLUX is a gated model, meaning it is openly accessible, but you need to login to HF first, i.e. no anonymous access. So you need an HF account first of all.
+Then, install the Hugging Face CLI:
+
+    # pip install huggingface_hub
+    
+Then login to it with an Access Token you generate in your account:
+
+    # huggingface-cli login
 
 Another way that is similiar, is to utilize the FluxPipeline cache. When a model is loaded, FluxPipeline caches the model in either a default subdirectory or one specified by the user. That cache directory could also be uploaded to AzureML, but the structure created in the cache is not as intuitive as that of the save_pretrained method, so I prefer the former way out of these two.
-
-The rest of the upload process is pretty straightforward, just configure an Azure MLClient with the right credentials, subscription, etc. and from there, create a registered model. 
+   
+Next, in python, configure an Azure MLClient with the right credentials, subscription, etc. and from there, create a registered model. 
 
 The only wrinkle here is that by default, the AzureML workspace's storage account was set up with key-based authentication disabled. But I was working from a local machine and could not get a Managed Identity for it (I guess the assumption is that the user would be working from an Azure VM?) so had a specifically enable key auth on the storage account for this to work.
 
