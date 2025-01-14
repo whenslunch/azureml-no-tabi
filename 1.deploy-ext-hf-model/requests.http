@@ -4,7 +4,7 @@ Authorization: Bearer 4f1UIwmaMJpcqwU1ZIrgWtk3BHYi3D8b
 Accept: image/png
 
 {
-    "prompt": "Fish heads fish heads roly poly fish heads eat them up yum.",
+    "prompt": "She wore a raspberry beret, the kind you find in a second-hand store.",
     "guidance_scale": 7.5,
     "num_inference_steps": 20,
     "max_sequence_length": 256,

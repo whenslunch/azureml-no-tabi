@@ -24,11 +24,13 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 Follow instructions from learn.microsoft.com to set up an Azure ML workspace in an Azure Subscription.
 Some notes
 - GPU compute quota is needed for this model. CPU works in theory, but is in practice way too slow
-- Check which GPU SKUs are allowed for Managed Endpoints from [link]. For instance, A10 GPUs are not supported. I requested Standard_NC40ads_H100_v5, which I found to be a good balance of price/performance for my needs.
+- Check which GPU SKUs are allowed for Managed Endpoints from [this page](https://learn.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list?view=azureml-api-2). For instance, A10 GPUs are not supported. I requested Standard_NC40ads_H100_v5, which I found to be a good balance of price/performance for my specific needs.
 - Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
-- Security notes...
+- Security notes - to be completed.
 
 ## 1. Set up HF model for upload, upload & register model
+
+References: download_and_save_model.py, upload_register_model_saved.py
 
 Flux.1-Dev NF4 consists of multiple components and not just a single model weights file, as many of the tutorials seemed to assume:
 - 1 transformer (the Flux model itself)
@@ -59,6 +61,8 @@ One other learning is that models created with the "v1" API from the azureml lib
 
 ## 2. Create Azure ML Environment
 
+Reference: create_environment.py
+
 There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I chose the latter.
 
 First, I found in the Microsoft image repo a base image for GPU inferencing: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1. The presence of the Nvidia CUDA driver is key.
@@ -70,6 +74,8 @@ The script then takes all of these arguments and an environment definition in Az
 
 ## 3. Write scoring script
 
+Reference: ./scripts/score.py
+
 To create the endpoint, a scoring script- one that loads the model and handle inferencing requests.p must be supplied. (Side note, Azure ML uses Flask as the default app framework foor this script.) 
 
 The generic scoring script template was modified to include the HF libraries for FluxPipeline and libraries for image manipulation. The now-familiar FluxPipeline.from_pretrained() loads the model from a concatenation of the fixed AZURE_MODEL_DIR location within the container, and "saved_model" which is the subdirectory from step 1.
@@ -80,11 +86,29 @@ At this stage you'll just have to take my word that the script works. I will imp
 
 ## 4. Create Endpoint
 
+Reference: NOTE- create_environment.py DOES NOT WORK and I'm still trying to figure out why. It will deploy successfully, but the resulting endpoint will return 408 for some reason, and there seems to be nothing in the logs to suggest why it is timing out.
+
+However, for now I have got it working by deploying via the Portal. So in ml.azure.com, in the Workspace > Environments page, create an Endpoint and Add deployment. Fill in all the tabs for the deployment configuration, specifying the Model (which should already be registered; pay attention to the version number), Environment and deployment name. Finally, specify the compute SKU, GPU based. I set the instance count to 1 since this is just a test, but you'll need more for redundancy and scale, of course. 
+
+Then hit create, and wait while it deploys. This can take a while depending on model and environment sizes.
+
+Here is the final output when all is done.
+![Azure ML Deployment output](./azureml_deployment_output.png)
 
 
 
 ## 5. Test 
 
+Reference: requests.http
+
+First you can test the endpoint from within the Azure ML Portal, under the Test tab. It will return binary, but at least hopefully it returns something. 
+
+Using the REST Client extension in VSCode, I added the Auth Key to a POST call with the configuration as seen in the Json payload.
+I got back this lovely image:
+
+![Flux output](./flux1_dev_nf4_output.png)
+
+Mission accomplished... for now.
 
 
 ## Improvements 
