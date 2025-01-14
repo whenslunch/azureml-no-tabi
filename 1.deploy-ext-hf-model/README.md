@@ -94,6 +94,7 @@ However, for now I have got it working by deploying via the Portal. So in ml.azu
 Then hit create, and wait while it deploys. This can take a while depending on model and environment sizes.
 
 Here is the final output when all is done.
+
 ![Azure ML Deployment output](./azureml_deployment_output.png)
 
 
