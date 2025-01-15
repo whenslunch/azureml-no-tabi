@@ -104,7 +104,7 @@ All the above code is stock-standard from the SDK examples BUT ONE IMPORTANT ENT
 
 By default, the server-side request timeout is set to 5 seconds. Flux NF4 is fast, but it isn't 5 seconds-fast! So insetad, this is set to 60 seconds. If not, you will get nothing but an HTTP 408 for all your trouble. This will be the case for most media GenAI models, because they can take quite a bit of time to generate.
 
-What's confusing is that if this same endpoint and deployment process is done via the Portal, the default timeout is 60 seconds, not 5.
+What's confusing is that when this same endpoint and deployment process is done via the Portal, the default timeout is set to 60 seconds, not 5.
 
 The script will seem to report the tasks complete and exit, but it will take some time to deploy (around 10 minutes in my case). Check on the deployment progress in the Portal's Environment page.
 
