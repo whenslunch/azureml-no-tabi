@@ -11,12 +11,9 @@ with open("config.json") as f:
 subscription_id = config["subscription_id"]
 resource_group = config["resource_group"]
 workspace_name = config["workspace_name"]
-uami_id = config["uami_id"]
 tenant_id = config["tenant_id"]
 client_id = config["client_id"]
 client_secret = config["client_secret"]
-certificate_path = config["certificate_path"]
-certificate_password = config["certificate_password"]
 
 # MI can't be used from local machine because it can't access IMDS (Instance Metadata Service) at 169.254.169.254 to get authed.
 # credential = ManagedIdentityCredential(client_id=uami_id)
