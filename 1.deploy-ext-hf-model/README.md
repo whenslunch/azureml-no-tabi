@@ -52,7 +52,7 @@ Then login to it with an Access Token you generate in your account:
 
     # huggingface-cli login
 
-Another way that is similiar, is to utilize the `FluxPipeline` cache. When a model is loaded, FluxPipeline caches the model in either a default subdirectory or one specified by the user. That cache directory could also be uploaded to AzureML, but the structure created in the cache is not as intuitive as that of the save_pretrained method, so I prefer the former way out of these two.
+Another way that is similiar, is to utilize the `FluxPipeline` cache. When a model is loaded, `FluxPipeline` caches the model in either a default subdirectory or one specified by the user. That cache directory could also be uploaded to AzureML, but the structure created in the cache is not as intuitive as that of the `save_pretrained` method, so I prefer the former way out of these two.
    
 Next, in python, configure an Azure MLClient with the right credentials, subscription, etc. and from there, create a registered model. 
 
