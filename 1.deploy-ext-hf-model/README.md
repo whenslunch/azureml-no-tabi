@@ -105,7 +105,7 @@ By default, the server-side request timeout is set to 5 seconds. Flux NF4 is fas
 
 What's confusing is that when this same endpoint and deployment process is done via the Portal, the default timeout is set to 60 seconds, not 5.
 
-The script will seem to report the tasks complete and exit, but it will take some time to deploy (around 10 minutes in my case). Check on the deployment progress in the Portal's Environment page.
+The script will seem to report the tasks complete and exit, but all it does is kick off an asynchronous deployment job that will take some time to finish (around 10 minutes in my case). Check on the deployment progress in the Portal's Environment page.
 
 Here is the final output when all is done.
 
