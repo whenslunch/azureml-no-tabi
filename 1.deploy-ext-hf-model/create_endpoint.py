@@ -49,7 +49,7 @@ env = ml_client.environments.get("basic-gpu-inference-env", version="2")
 
 # create a deployment
 deployment = ManagedOnlineDeployment(
-    name="purple",
+    name="brown",
     endpoint_name=endpoint_name,
     model=registered_model,
     environment=env,
