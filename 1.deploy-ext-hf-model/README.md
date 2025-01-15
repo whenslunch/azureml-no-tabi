@@ -62,7 +62,7 @@ One other learning is that models created with the "v1" API from the azureml lib
 
 ## 3. Create Azure ML Environment
 
-Reference: `create_environment.py`
+References: `create_environment.py, config.yml`
 
 I chose to create a custom environments with this base image for GPU inferencing in the Microsoft image repo: 
 `mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1`
