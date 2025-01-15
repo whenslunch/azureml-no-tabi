@@ -3,7 +3,8 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
-    CodeConfiguration
+    CodeConfiguration,
+    OnlineRequestSettings
 )
 from azure.identity import ClientSecretCredential
 
@@ -55,6 +56,9 @@ deployment = ManagedOnlineDeployment(
     code_configuration=CodeConfiguration(
         code="./scripts", scoring_script="score.py"
     ),
+    request_settings=OnlineRequestSettings(
+        request_timeout_ms=60000
+    ),
     instance_type="Standard_NC40ads_H100_v5",
     instance_count=1,
 )
@@ -67,4 +71,5 @@ print("Endpoint created or updated.")
 # Create or update the Deployment
 print("Creating or updating the deployment...")
 ml_client.online_deployments.begin_create_or_update(deployment=deployment)
+ml_client.online_deployments.timeout = 120
 print("Deployment created or updated.")

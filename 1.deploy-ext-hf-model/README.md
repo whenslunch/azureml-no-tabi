@@ -31,7 +31,7 @@ Some notes
 
 ## 2. Set up FLUX NF4 for upload, upload & register model
 
-References: download_and_save_model.py, upload_register_model_saved.py
+References: `download_and_save_model.py, upload_register_model_saved.py`
 
 Flux.1-Dev NF4 consists of multiple components and not just a single model weights file, as many of the tutorials seemed to assume:
 - 1 transformer (the Flux model itself)
@@ -62,7 +62,7 @@ One other learning is that models created with the "v1" API from the azureml lib
 
 ## 3. Create Azure ML Environment
 
-Reference: create_environment.py
+Reference: `create_environment.py`
 
 There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I chose the latter.
 
@@ -75,7 +75,7 @@ The script then takes all of these arguments and an environment definition in Az
 
 ## 4. Write scoring script
 
-Reference: ./scripts/score.py
+Reference: `./scripts/score.py`
 
 To create the endpoint, a scoring script- one that loads the model and handle inferencing requests- must be supplied. (Side note, Azure ML uses Flask as the default app framework foor this script.) 
 
@@ -87,20 +87,37 @@ At this stage you'll just have to take my word that the script works. I will imp
 
 ## 5. Create Endpoint and Deployment
 
-Reference: NOTE- create_environment.py DOES NOT WORK and I'm still trying to figure out why. It will deploy successfully, but the resulting endpoint will return 408 for some reason, and there seems to be nothing in the logs to suggest why it is timing out. I realize that as part of the Portal deployment method, there is a configuration line for "timeout" set to 60 sec, whereas the logs seem to suggest it's set to 5 sec when deployed by script. Definitely going to pull on that thread.
+Reference: `create_environment.py` 
 
-However, for now I have got it working by deploying via the Portal. So in ml.azure.com, in the Workspace > Environments page, create an Endpoint and Add deployment. Fill in all the tabs for the deployment configuration, specifying the Model (which should already be registered; pay attention to the version number), Environment and deployment name. Finally, specify the compute SKU, GPU based. I set the instance count to 1 since this is just a test, but you'll need more for redundancy and scale, of course. 
+The script first creates an MLClient ml_client with a Service Principal. This object is the in-code representation of the final endpoint and deployment that will be created.
 
-Then hit create, and wait while it deploys. This can take a while depending on model and environment sizes.
+The endpoint is first defined with a name, description and authorization mode.
+The model to use, "flux1-dev-nf4-2:1", was previously registered, so put that into ml_client, along with the pre-defined environment "basic-gpu-inference-env:2". 
+
+The deployment is then defined with a name, the endpoint, model, environment, code configuration (the scoring script), compute instance type (Standard_NC40ads_H100_v5 for me) and instance count (1 for testing, but increase it if you have quota and need redundancy + scale, of course).
+
+All the above is stock-standard from the SDK examples BUT ONE IMPORTANT ENTITY to set is
+
+`request_settings=OnlineRequestSettings( request_timeout_ms=60000 )`
+
+By default, the server-side request timeout is set to 5 seconds. Flux NF4 is fast, but it isn't 5 seconds-fast!! So this is set to 60 seconds. If not, you will get nothing but an HTTP 408 for all your trouble. This will be the case for most media GenAI models, because they can take quite a bit of time to generate.
+
+What's confusing is that if this same endpoint and deployment process is done via the Portal, the default timeout is 60 seconds, not 5.
+
+The script will seem to report the tasks complete and exit, but it will take some time to deploy (around 10 minutes in my case). Check on the deployment progress in the Portal's Environment page.
 
 Here is the final output when all is done.
 
 ![Azure ML Deployment output](./azureml_deployment_output.png)
 
+You may have noticed two deployments in the one endpoint, that is the result of multiple deployment attempts. Make sure you set the traffic to the right deployment to test. 
+
+One annoyance is that all the Portal status indicators seem to update at different times - the deployment status may say "complete" but attempts to test or consume it will fail until you actually get an _activitiy alert_ saying the job is complete. 
+
 
 ## 6. Test 
 
-Reference: requests.http
+`Reference: requests.http`
 
 First you can test the endpoint from within the Azure ML Portal, under the Test tab. It will return binary, but at least hopefully it returns something. 
 
