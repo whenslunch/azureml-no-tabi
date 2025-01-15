@@ -97,7 +97,7 @@ The model to be used, `flux1-dev-nf4-2:1`, was previously registered, so put tha
 
 The deployment is then defined with a name, the endpoint, model, environment, code configuration (the scoring script), compute instance type (`Standard_NC40ads_H100_v5` for me) and instance count (1 for testing, but increase it if you have quota and need redundancy + scale, of course).
 
-All the above code is stock-standard from the SDK examples BUT ONE IMPORTANT ENTITY TO SET HERE THAT IS NOT INCLUDED, is:
+All the above code is stock-standard from the SDK examples BUT THERE'S ONE IMPORTANT ENTITY TO SET HERE THAT IS NOT IMMEDIATELY OBVIOUS:
 
 `request_settings=OnlineRequestSettings( request_timeout_ms=60000 )`
 
