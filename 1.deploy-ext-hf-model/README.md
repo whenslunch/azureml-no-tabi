@@ -25,7 +25,7 @@ Deploy FLUX.1 Dev NF4 as a real-time Managed Endpoint for inferencing on Azure M
 Follow instructions from learn.microsoft.com to set up an Azure ML workspace in an Azure Subscription.
 Some notes
 - GPU compute quota is needed for this model. CPU works in theory, but is in practice way too slow
-- Check which GPU SKUs are allowed for Managed Endpoints from [this page](https://learn.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list?view=azureml-api-2). For instance, A10 GPUs are not supported. I requested Standard_NC40ads_H100_v5, which I found to be a good balance of price/performance for my specific needs.
+- Check which GPU SKUs are allowed for Managed Endpoints from [this page](https://learn.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list?view=azureml-api-2). For instance, A10 GPUs are not supported. I requested a few cores worth of `Standard_NC40ads_H100_v5`, which I found to be a good balance of price/performance for my specific needs.
 - Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes - to be completed.
 
@@ -40,7 +40,7 @@ Flux.1-Dev NF4 consists of multiple components and not just a single model weigh
 - 1 variational autoencoder (vae)
 - scheduler
 
-There are a few ways to deal with this but one way is to load the model using FluxPipeline.from_pretrained() with the correct parameters, then save it out to a subdirectory on disk with FluxPipeline.save_pretrained(). Here, I saved it to "./saved_model". Before saving, run a test generation locally that outputs a PNG file. 
+There are a few ways to deal with this but one way is to load the model using `FluxPipeline.from_pretrained()` with the correct parameters, then save it out to a subdirectory on disk with `FluxPipeline.save_pretrained()`. Here, I saved it to `./saved_model`. Before saving, run a test generation locally that outputs a PNG file. 
 
 Now, FLUX is a gated model, meaning it is openly accessible but you need to login to HF first- no anonymous access. So make sure you have an HF account.
 Then, install the Hugging Face CLI:
@@ -51,7 +51,7 @@ Then login to it with an Access Token you generate in your account:
 
     # huggingface-cli login
 
-Another way that is similiar, is to utilize the FluxPipeline cache. When a model is loaded, FluxPipeline caches the model in either a default subdirectory or one specified by the user. That cache directory could also be uploaded to AzureML, but the structure created in the cache is not as intuitive as that of the save_pretrained method, so I prefer the former way out of these two.
+Another way that is similiar, is to utilize the `FluxPipeline` cache. When a model is loaded, FluxPipeline caches the model in either a default subdirectory or one specified by the user. That cache directory could also be uploaded to AzureML, but the structure created in the cache is not as intuitive as that of the save_pretrained method, so I prefer the former way out of these two.
    
 Next, in python, configure an Azure MLClient with the right credentials, subscription, etc. and from there, create a registered model. 
 
@@ -66,9 +66,11 @@ Reference: `create_environment.py`
 
 There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I chose the latter.
 
-First, I found in the Microsoft image repo a base image for GPU inferencing: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1. The presence of the Nvidia CUDA driver is key.
+First, I found in the Microsoft image repo a base image for GPU inferencing: 
+`mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1`
+The presence of the Nvidia CUDA driver is key.
 
-I created a config.yml file for conda, including the required libraries for the Flux NF4 model. Pinning the version numbers is important if you don't want mysterious model crashes. Note - I'm not sure where I missed it in the docs, but doing it this way I had an environment container crash because it lacked "azureml-inference-server-http" in the conda config file, and had to add it manually for it to work.
+I created a `config.yml` file for conda, including the required libraries for the Flux NF4 model. Pinning the version numbers is important if you don't want mysterious model crashes. Note - I'm not sure where I missed it in the docs, but doing it this way I had an environment container crash because it lacked `azureml-inference-server-http` in the conda config file, and had to add it manually for it to work.
 
 The script then takes all of these arguments and an environment definition in Azure ML as opposed to an actual environment. The actual environment build gets triggered with the deployment job as you'll see later. Or, if you really wanted to you could manually force a build in the Azure ML Portal Environment page.
 
@@ -79,7 +81,7 @@ Reference: `./scripts/score.py`
 
 To create the endpoint, a scoring script- one that loads the model and handle inferencing requests- must be supplied. (Side note, Azure ML uses Flask as the default app framework foor this script.) 
 
-The generic scoring script template was modified to include the HF libraries for FluxPipeline and libraries for image manipulation. The now-familiar FluxPipeline.from_pretrained() loads the model from a concatenation of the fixed AZURE_MODEL_DIR location within the container, and "saved_model" which is the subdirectory from step 1.
+The generic scoring script template was modified to include the HF libraries for FluxPipeline and libraries for image manipulation. The now-familiar `FluxPipeline.from_pretrained()` loads the model from a concatenation of the pre-defined `AZURE_MODEL_DIR` location within the container, and `saved_model` which is the subdirectory from step 1.
 
 The generated image was then saved in PNG format and sent as a response, along with the appropriate http mime type. 
 
@@ -89,12 +91,12 @@ At this stage you'll just have to take my word that the script works. I will imp
 
 Reference: `create_environment.py` 
 
-The script first creates an MLClient ml_client with a Service Principal. This object is the in-code representation of the final endpoint and deployment that will be created.
+The script first creates an `MLClient`, creatively named `ml_client`, with a Service Principal. This object is the in-code representation of the final endpoint and deployment that will be created.
 
 The endpoint is first defined with a name, description and authorization mode.
-The model to use, "flux1-dev-nf4-2:1", was previously registered, so put that into ml_client, along with the pre-defined environment "basic-gpu-inference-env:2". 
+The model to be used, `flux1-dev-nf4-2:1`, was previously registered, so put that into `ml_client`, along with the pre-defined environment `basic-gpu-inference-env:2`.
 
-The deployment is then defined with a name, the endpoint, model, environment, code configuration (the scoring script), compute instance type (Standard_NC40ads_H100_v5 for me) and instance count (1 for testing, but increase it if you have quota and need redundancy + scale, of course).
+The deployment is then defined with a name, the endpoint, model, environment, code configuration (the scoring script), compute instance type (`Standard_NC40ads_H100_v5` for me) and instance count (1 for testing, but increase it if you have quota and need redundancy + scale, of course).
 
 All the above is stock-standard from the SDK examples BUT ONE IMPORTANT ENTITY to set is
 
