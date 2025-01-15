@@ -110,7 +110,7 @@ Here is the final output when all is done.
 
 ![Azure ML Deployment output](./azureml_deployment_output.png)
 
-You may have noticed two deployments in the one endpoint, that is the result of multiple deployment attempts. Make sure you set the traffic to the right deployment to test. 
+You may have noticed two deployments in the one endpoint, that is the result of multiple deployment attempts. Make sure you set the traffic to the right deployment to test if you are in the same situation. 
 
 One annoyance is that all the Portal status indicators seem to update at different times - the deployment status may say "complete" but attempts to test or consume it will fail until you actually get an _activitiy alert_ saying the job is complete. 
 
