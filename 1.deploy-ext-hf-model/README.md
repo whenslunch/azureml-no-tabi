@@ -26,7 +26,7 @@ Follow instructions from learn.microsoft.com to set up an Azure ML workspace in 
 Some notes
 - GPU compute quota is needed for this model. CPU works in theory, but is in practice way too slow
 - Check which GPU SKUs are allowed for Managed Endpoints from [this page](https://learn.microsoft.com/en-us/azure/machine-learning/reference-managed-online-endpoints-vm-sku-list?view=azureml-api-2). For instance, A10 GPUs are not supported. I requested a few cores worth of `Standard_NC40ads_H100_v5`, which I found to be a good balance of price/performance for my specific needs.
-- Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
+- Ensure GPU has enough VRAM. I selected Flux NF4 which is a quanitized model that's ~9GB (vs full-fat Flux Dev which is ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes - to be completed.
 - A `config.json` file was used to contain all the secrets locally.
 
