@@ -29,11 +29,11 @@ Some notes
 - Ensure GPU has enough VRAM. I selected Flux.1 dev NF4 which is a quanitized model that's ~9GB (vs regular ~30GB) in size which will fit any valid GPU's VRAM
 - Security notes - to be completed.
 
-## 2. Set up FLUX NF4 for upload, upload & register model
+## 2. Prepare, upload & register Flux NF4 model
 
 References: `download_and_save_model.py, upload_register_model_saved.py`
 
-Flux.1-Dev NF4 consists of multiple components and not just a single model weights file, as many of the tutorials seemed to assume:
+Flux NF4 consists of multiple components and not just a single model weights file, as many of the tutorials seemed to assume:
 - 1 transformer (the Flux model itself)
 - 2 CLIP (Contrastive Language-Image Pair) text encoder models
 - 2 tokenizer models
