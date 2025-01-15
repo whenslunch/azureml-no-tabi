@@ -66,7 +66,7 @@ Reference: `create_environment.py`
 
 There are several ways to create an Azure ML Environment, including using either curated or custom environments, etc. and either through the Portal or programmatically. I chose the latter.
 
-First, I found in the Microsoft image repo a base image for GPU inferencing: 
+I found this base image for GPU inferencing in the Microsoft image repo: 
 `mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cuda11.8-gpu-inference:20241216.v1`
 The presence of the Nvidia CUDA driver is key.
 
