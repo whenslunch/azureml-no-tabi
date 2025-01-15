@@ -72,7 +72,7 @@ The presence of the Nvidia CUDA driver is key.
 
 I created a `config.yml` file for conda, including the required libraries for the Flux NF4 model. Pinning the version numbers is important if you don't want mysterious model crashes. Note - I'm not sure where I missed it in the docs, but doing it this way I had an environment container crash because it lacked `azureml-inference-server-http` in the conda config file, and had to add it manually for it to work.
 
-The script then takes all of these arguments and creates an environment definition in Azure ML, but doesn't actually build it at first. That build job gets triggered with the deployment job later. Or, if you really wanted to you could manually force a build in the Azure ML Portal Environment page, by clicking on the Build / Re-build button.
+The script then takes all of these arguments and creates an environment definition in Azure ML, but doesn't actually build it at first. That build job only gets triggered with the deployment job later. Alternatively, you could manually force a build in the Azure ML Portal by going to the Environment page, selecting your environment, and clicking on the Build / Re-build button there. 
 
 
 ## 4. Write scoring script
