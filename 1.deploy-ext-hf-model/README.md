@@ -79,7 +79,7 @@ The script then takes all of these arguments and creates an environment definiti
 
 Reference: `./scripts/score.py`
 
-To create the endpoint, a scoring script- one that loads the model and handle inferencing requests- must be supplied. (Side note, Azure ML uses Flask as the default app framework foor this script.) 
+To create the endpoint, a scoring script- one that loads the model and handle inferencing requests- must be supplied. (Side note, Azure ML uses Flask as the default web app framework.) 
 
 The generic scoring script template was modified to include the HF libraries for FluxPipeline and libraries for image manipulation. The now-familiar `FluxPipeline.from_pretrained()` loads the model from a concatenation of the pre-defined `AZURE_MODEL_DIR` location within the container, and `saved_model` which is the subdirectory from step 1.
 
