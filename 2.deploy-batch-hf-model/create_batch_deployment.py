@@ -74,6 +74,8 @@ except Exception as e:
 
 # deploy the model in the environment
 
+# configure the deployment
+
 deployment = ModelBatchDeployment(
     name="nf4-batch-deployment",
     description="A deployment of FLUX-1.Dev NF4.",
@@ -86,15 +88,16 @@ deployment = ModelBatchDeployment(
     compute=compute_name,
     settings=ModelBatchDeploymentSettings(
         max_concurrency_per_instance=1,
-        mini_batch_size=1,
+        mini_batch_size=10,
         instance_count=1,
         output_action=BatchDeploymentOutputAction.APPEND_ROW,
-        output_file_name="generated-image.png",
+        #output_file_name="generated-image.png,
         retry_settings=BatchRetrySettings(max_retries=3, timeout=30),
         logging_level="info",
     ),
 )
 
+# create the deployment
 try:
     ml_client.begin_create_or_update(deployment).result()
     print(f"Deployment '{deployment.name}' created.")
@@ -102,6 +105,8 @@ except Exception as e:
     print(f"Deployment not created: {e}")
     raise
 
+
+# deploy to the endpoint
 try:
     endpoint = ml_client.batch_endpoints.get(endpoint_name)
     endpoint.defaults.deployment_name = deployment.name

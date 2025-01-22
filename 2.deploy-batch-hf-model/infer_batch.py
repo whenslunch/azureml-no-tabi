@@ -1,4 +1,5 @@
-from azure.ai.ml import MLClient, Input
+import random
+from azure.ai.ml import MLClient, Input, Output
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import Data
 
@@ -37,6 +38,7 @@ endpoint_name = "flux-nf4-batch"
 deployment_name = "nf4-batch-deployment"
 data_asset_name = "t2igendata"
 
+# configure the input
 try:
     t2i_data_asset = ml_client.data.get(name=data_asset_name, label="latest")
     print(f"Data asset '{data_asset_name}:{t2i_data_asset.id}' found.")
@@ -46,14 +48,36 @@ except Exception as e:
 
 input = Input(path=t2i_data_asset.id)
 
-# Query the endpoint
-
+# configure the output
 try:
+
+    default_ds = ml_client.datastores.get_default()
+
+    #filename = f"generated-images-{random.randint(0, 1000)}.png"
+    data_path = "batch-jobs/generated-images"
+    output = Output(type=AssetTypes.URI_FOLDER, path=f"{default_ds.id}/paths/{data_path}")
+    print(f"Output path: {output.path}")
+
+except Exception as e:
+    print(f"Datastore not found: {e}")
+    raise
+
+
+# Query the endpoint
+try:
+
     job = ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint_name,
-        input=input
+        input=input,
+        output=output
+    #     params_override=[
+    #     {"output_dataset.datastore_id": f"azureml:{default_ds.id}"},
+    #     {"output_dataset.path": f"/{endpoint_name}/"},
+    #     {"output_file_name": filename},
+    # ],
     )
     print(f"Job '{job.name}' created.")
+
 except Exception as e:
     print(f"Failed to create job: {e}")
     raise
