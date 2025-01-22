@@ -1,11 +1,5 @@
-import random
-from azure.ai.ml import MLClient, Input, Output
-from azure.ai.ml.constants import AssetTypes
-from azure.ai.ml.entities import Data
-
+from azure.ai.ml import MLClient, Input
 from azure.identity import ClientSecretCredential
-
-
 import json
 
 with open("config.json") as f:
@@ -48,33 +42,14 @@ except Exception as e:
 
 input = Input(path=t2i_data_asset.id)
 
-# configure the output
-try:
-
-    default_ds = ml_client.datastores.get_default()
-
-    #filename = f"generated-images-{random.randint(0, 1000)}.png"
-    data_path = "batch-jobs/generated-images"
-    output = Output(type=AssetTypes.URI_FOLDER, path=f"{default_ds.id}/paths/{data_path}")
-    print(f"Output path: {output.path}")
-
-except Exception as e:
-    print(f"Datastore not found: {e}")
-    raise
-
+# configure the output - no need, we will use the default workspaceblobstore
 
 # Query the endpoint
 try:
 
     job = ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint_name,
-        input=input,
-        output=output
-    #     params_override=[
-    #     {"output_dataset.datastore_id": f"azureml:{default_ds.id}"},
-    #     {"output_dataset.path": f"/{endpoint_name}/"},
-    #     {"output_file_name": filename},
-    # ],
+        input=input
     )
     print(f"Job '{job.name}' created.")
 
