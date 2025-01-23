@@ -1,5 +1,7 @@
 # What is this repo?
 
+AzureMLの旅 - AzureML-no-tabi - AzureML Journey
+
 A record of my personal learnings as I tackle the world of Azure technologies related to Machine Learning/ML Engineering.
 
 You're welcome along for the ride... if you don't mind some motion sickness!
