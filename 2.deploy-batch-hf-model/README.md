@@ -63,7 +63,7 @@ The batch endpoint basically takes whatever input you give it, and then dumps ou
 However, I will be generating images from each input file and it's not best practice to stuff them into a dataframe. I mean, you could, since practically the GPU VM SKUs tend to come with a lot of RAM anyway. But the more elegant solution is to save out each image to a storage blob under a unique name, and then append the location of those images to the resulting text file.
 
 To do this, I modified the scoring script from Task 1:
-- during the `init()`, set up a global output path from the environment variable `AZUREML_BI_OUTPUT_PATH`, where 'BI' stands for 'Batch Inference'. This is where we will deposit all generated images. (I had to seriously hunt for this one, before I found it right there in the docs. I _really_ wish there was one reference page listing all environment variables available within a compute VM.)
+- during the `init()`, set up a global output path from the environment variable `AZUREML_BI_OUTPUT_PATH`, where 'BI' stands for 'Batch Inference'. This is where we will deposit all generated images. (I had to seriously hunt for this environment variable, before I found it right there in the docs. I _really_ wish there was one reference page listing all environment variables available within a compute VM.)
 - create the unique filename that uses the index number of the request. NOTE there is a bug in this one which I'll fix later - it assumes there's only going to be one mini-batch of requests. If there are more than one, the generated files will get overwritten. A better way would perhaps be to use a random guid as part of the filename.
 - As mentioned, append the output path of each image generated into `results[]`, that will eventually get returned.
 
