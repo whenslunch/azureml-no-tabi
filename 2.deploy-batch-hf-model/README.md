@@ -67,6 +67,7 @@ To do this, I modified the scoring script from Task 1:
 - during the `init()`, set up a global output path from the environment variable `AZUREML_BI_OUTPUT_PATH`, where 'BI' stands for 'Batch Inference'. This is where we will deposit all generated images. (I had to seriously hunt for this environment variable, before I found it right there in the docs. I _really_ wish there was one reference page listing all environment variables available within a compute VM.)
 - `AZUREML_BI_OUTPUT_PATH` will, by default, be set to the default `workspaceblobstorage`. You can see what exactly this is in the Azure ML Portal in the Connections page.
 - create the unique filename that uses the index number of the request. NOTE there is a bug in this one which I'll fix later - it assumes there's only going to be one mini-batch of requests. If there are more than one, the generated files will get overwritten. A better way would perhaps be to use a random guid as part of the filename.
+- create an output file path that's a concat of `output_path` and the filename. Save the image there.
 - As mentioned, append the output path of each image generated into `results[]`, that will eventually get returned.
 
 As with Task 1, I need to find a way to test this locally before deploying... stay tuned.
