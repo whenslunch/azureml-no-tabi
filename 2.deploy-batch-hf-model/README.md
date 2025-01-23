@@ -20,6 +20,7 @@ To be expedient, these steps will assume Task 1 has been done. Down the road I p
 4. Create batch scoring script
 5. Create batch deployment
 6. Test: perform a batch inference
+7. Clean up
 
 
 ## 1. Set up Azure ML
@@ -104,6 +105,11 @@ Prompt: "She wore a raspberry beret, the kind you find in a second-hand store."
 
 ![image2](./task2-data2.png)
 Prompt: "In a big country, dreams stay with you, like a lovers voice fires the mountain side."
+
+
+## 7. Clean up
+
+Technically, this endpoint will automatically spin down to 0 instances when not in use after some timeout value. But in the interests of keeping a clean subscription, I deleted mine when I was done.
 
 ## Lessons Learned
 TODO
