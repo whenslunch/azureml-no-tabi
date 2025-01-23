@@ -134,7 +134,7 @@ Mission accomplished... for now.
 ## 7. Clean up
 
 The endpoint is costing money while it is active, so make sure to delete it if not needed.
-I saw something in the docs that says it will spin down to 0 if inactive for a certain period, but I'm not sure that functionality actually works, I will test further.
+
 
 ## Improvements 
 
