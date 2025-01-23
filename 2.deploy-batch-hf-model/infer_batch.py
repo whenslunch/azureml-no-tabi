@@ -42,7 +42,7 @@ except Exception as e:
 
 input = Input(path=t2i_data_asset.id)
 
-# configure the output - no need, we will use the default workspaceblobstore
+# No need to configure the output. We will use the default workspaceblobstore
 
 # Query the endpoint
 try:

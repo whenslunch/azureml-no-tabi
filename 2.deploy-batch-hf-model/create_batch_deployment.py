@@ -91,7 +91,6 @@ deployment = ModelBatchDeployment(
         mini_batch_size=10,
         instance_count=1,
         output_action=BatchDeploymentOutputAction.APPEND_ROW,
-        #output_file_name="generated-image.png,
         retry_settings=BatchRetrySettings(max_retries=3, timeout=30),
         logging_level="info",
     ),

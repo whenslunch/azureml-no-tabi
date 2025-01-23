@@ -6,8 +6,6 @@ from diffusers import FluxPipeline
 import pandas as pd
 from typing import List
 
-
-
 def init():
 
     global output_path

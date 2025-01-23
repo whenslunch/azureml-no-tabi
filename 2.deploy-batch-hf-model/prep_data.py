@@ -33,19 +33,16 @@ except Exception as e:
     print(f"Failed to create MLClient: {e}")
     raise
 
-endpoint_name = "flux-nf4-batch"
-deployment_name = "nf4-batch-deployment"
-
 
 # set up the data asset
 
-data_path = "./data/input1.json"
-data_asset_name = "t2igendatafile"
+data_path = "./data"
+data_asset_name = "t2igendata"
 
 try:
     t2i_data_object = Data(
         path=data_path,
-        type=AssetTypes.URI_FILE,
+        type=AssetTypes.URI_FOLDER,
         description="Input data for text to image generation",
         name=data_asset_name
     )
