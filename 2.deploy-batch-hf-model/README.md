@@ -61,7 +61,7 @@ Reference: `./scripts/batch_score.py`
 
 The batch endpoint basically takes whatever input you give it, and then dumps out the scoring results in a Pandas dataframe. This works for most other applications, and indeed most examples I saw on learn.microsoft.com show the inferencing operation returning text results in a csv file. 
 
-However, I will be generating images from each input file and it's not best practice to stuff them into a dataframe. I mean, you could, since practically the GPU VM SKUs tend to come with a lot of RAM anyway. But the more elegant solution is to save out each image to a storage blob under a unique name, and then append the location of those images to the resulting text file.
+However, I will be generating images from each input file and it's not best practice to stuff them into a dataframe. I mean, you _could_, since practically the GPU VM SKUs tend to come with a lot of RAM anyway. But the more elegant solution is to save out each image to a storage blob under a unique name, and then append the location of those images to the resulting text file.
 
 To do this, I modified the scoring script from Task 1:
 - during the `init()`, set up a global output path from the environment variable `AZUREML_BI_OUTPUT_PATH`, where 'BI' stands for 'Batch Inference'. This is where we will deposit all generated images. (I had to seriously hunt for this environment variable, before I found it right there in the docs. I _really_ wish there was one reference page listing all environment variables available within a compute VM.)
