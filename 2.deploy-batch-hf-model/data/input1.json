@@ -1,0 +1,7 @@
+{
+    "prompt": "She wore a raspberry beret, the kind you find in a second-hand store.",
+    "guidance_scale": 7.5,
+    "num_inference_steps": 20,
+    "max_sequence_length": 256,
+    "generator_seed": 7773018
+}

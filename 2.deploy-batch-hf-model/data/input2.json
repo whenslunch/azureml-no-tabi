@@ -1,0 +1,7 @@
+{
+    "prompt": "In a big country, dreams stay with you, like a lovers voice fires the mountain side.",
+    "guidance_scale": 7.5,
+    "num_inference_steps": 20,
+    "max_sequence_length": 256,
+    "generator_seed": 99971003883
+}
