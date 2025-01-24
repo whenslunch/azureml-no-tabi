@@ -8,7 +8,7 @@ You're welcome along for the ride... if you don't mind some motion sickness!
 
 ### Index
 
-Azure ML
+Bring-Your-Own-Model to Azure ML
 
 [Task 1 - Deploy External HuggingFace Model as a Managed Online Endpoint](./1.deploy-ext-hf-model/README.md)
 
