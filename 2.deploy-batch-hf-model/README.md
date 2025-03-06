@@ -78,7 +78,7 @@ Also, I haven't figured how to get logging working properly yet, in my case, all
 
 Reference: `create_batch_deployment.py`
 
-After the usual rigmarole to create an MLClient, I muster an `Amlcompute` clusters using the trusty old `Standard_NC40ads_H100_v5` SKU, setting a max cluster size of 1 (after all I'm just testing) and minimum 0, to save $$$ when not in use.
+After the usual rigmarole to create an MLClient, I muster an `Amlcompute` cluster using the trusty old `Standard_NC40ads_H100_v5` SKU, setting a max cluster size of 1 (after all I'm just testing) and minimum 0, to save $$$ when not in use.
 
 Then it's a matter of creating a batch endpoint called `flux-nf4-batch`, specifying the model and environment, and then configuring a `ModelBatchDeployment`. I specified the `output_action=BatchDeploymentOutputAction.APPEND_ROW` which will, as it promises, append each image output path returned from the scoring script, into the final output file. And because I don't specify `output_file`, it will come out as the default `predictions.csv`.  All other configuration values were copy-pasted from examples, although I did set `instance_count` to 1 because I knew that's all I have in my cluster anyway.
 
